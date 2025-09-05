@@ -9,19 +9,9 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "insecure-secret-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ⚡ Hosts
-ALLOWED_HOSTS = [
-    "ecommerce-website-umnl.onrender.com",
-    "ecommerce-website-3-g3zi.onrender.com",
-    "ecommerce-website-3-4cjp.onrender.com",  # 👈 NEW DOMAIN
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("RENDER_EXTERNAL_HOSTNAME", "")]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://ecommerce-website-umnl.onrender.com",
-    "https://ecommerce-website-3-g3zi.onrender.com",
-    "https://ecommerce-website-3-4cjp.onrender.com",  # 👈 NEW DOMAIN
-]
 
 # ⚡ Installed Apps
 INSTALLED_APPS = [
