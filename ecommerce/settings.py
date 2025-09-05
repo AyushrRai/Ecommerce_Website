@@ -6,7 +6,11 @@ SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['myshop.onrender.com']
+ALLOWED_HOSTS = [
+    'ecommerce-website-umnl.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 INSTALLED_APPS = [
