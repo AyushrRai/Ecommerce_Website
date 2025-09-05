@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>My Order History</h2>
+    
+    {% if orders %}
+    <div class="table-responsive mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    <td>{{ order.get_total_items }}</td>
+                    <td>₹{{ order.total_amount }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if order.payment_status == 'completed' %}bg-success
+                            {% elif order.payment_status == 'pending' %}bg-warning
+                            {% else %}bg-secondary{% endif %}">
+                            {{ order.get_payment_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        You haven't placed any orders yet.
+        <a href="{% url 'home' %}" class="alert-link">Start shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

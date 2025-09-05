@@ -1,0 +1,72 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Your Shopping Cart - ShopNow{% endblock %}
+
+{% block content %}
+    <h2>Your Shopping Cart</h2>
+    
+    {% if cart_items %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" width="60" class="me-3">
+                                    {% else %}
+                                        <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="{{ item.product.title }}" width="60" class="me-3">
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-0">{{ item.product.title }}</h6>
+                                        <small class="text-muted">{{ item.product.category.name }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>₹{{ item.product.price }}</td>
+                            <td>
+                                <form method="post" action="{% url 'update_cart' item.id %}" class="d-flex">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control quantity-input me-2">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                </form>
+                            </td>
+                            <td>₹{{ item.total_price }}</td>
+                            <td>
+                                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                        <td><strong>₹{{ total }}</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div class="text-end mt-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary me-2">Continue Shopping</a>
+            <a href="{% url 'checkout' %}" class="btn btn-warning">Proceed to Checkout</a>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Your cart is empty. <a href="{% url 'home' %}" class="alert-link">Start shopping</a> now!
+        </div>
+    {% endif %}
+{% endblock %}

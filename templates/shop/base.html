@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Commerce Store{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #131921;
+            --secondary-color: #232f3e;
+            --accent-color: #febd69;
+            --light-color: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+            background-color: #f3f3f3;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            padding: 0.5rem 1rem;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: white !important;
+            font-size: 0.9rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .search-btn {
+            background-color: var(--accent-color);
+            color: #111;
+        }
+        
+        .card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-img {
+            height: 200px;
+            object-fit: contain;
+            padding: 10px;
+        }
+        
+        .category-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+        
+        .price {
+            color: #B12704;
+            font-weight: bold;
+        }
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-color);
+            color: #111;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .auth-card {
+            max-width: 500px;
+            margin: 2rem auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: none;
+        }
+        
+        .auth-card .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #0f1721;
+            border-color: #0f1721;
+        }
+        
+        .btn-warning {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #111;
+        }
+        
+        .btn-warning:hover {
+            background-color: #f3a847;
+            border-color: #f3a847;
+            color: #111;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">ShopNow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for category in categories %}
+                                <li><a class="dropdown-item" href="{% url 'home' %}?category={{ category.id }}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex search-box mx-2" action="{% url 'home' %}" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search products..." value="{{ request.GET.q }}">
+                    <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hello, {{ user.username }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cart-icon" href="{% url 'cart' %}">
+                                <i class="fas fa-shopping-cart fa-lg"></i>
+                                <span class="cart-count">{{ cart_items_count }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order_history' %}">
+                               <i class="fas fa-history me-1"></i> My Orders
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>ShopNow is your one-stop destination for all your shopping needs. We offer a wide range of products at competitive prices.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Products</a></li>
+                        <li><a href="#" class="text-white">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact Us</h5>
+                    <address>
+                        <strong>ShopNow Inc.</strong><br>
+                        123 Main Street<br>
+                        New York, NY 10001<br>
+                        <i class="fas fa-phone"></i> (123) 456-7890
+                    </address>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>&copy; 2023 ShopNow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block scripts %}{% endblock %}
+
+
+
+</body>
+</html>

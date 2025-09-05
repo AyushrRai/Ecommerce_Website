@@ -1,0 +1,63 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Home - ShopNow{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <div class="hero-section mb-5 p-5 bg-light rounded-3">
+        <div class="container-fluid py-5 text-center">
+            <h1 class="display-5 fw-bold animate__animated animate__fadeIn">Welcome to ShopNow</h1>
+            <p class="fs-4 animate__animated animate__fadeIn animate__delay-1s">Discover amazing products at unbeatable prices</p>
+            <a href="#products" class="btn btn-warning btn-lg mt-3 animate__animated animate__fadeIn animate__delay-2s">Shop Now</a>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="mb-4">
+    <h4 class="mb-3">Shop by Category</h4>
+    <div class="d-flex flex-wrap">
+        <a href="{% url 'home' %}" class="category-badge mb-2 {% if not selected_category %}bg-warning text-dark{% endif %}">
+            All
+        </a>
+        {% for category in categories %}
+            <a href="{% url 'home' %}?category={{ category.id }}" 
+               class="category-badge mb-2 {% if selected_category == category.id %}bg-warning text-dark{% endif %}">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- Products Section -->
+   <h4 class="mb-4" id="products">{% if selected_category %}{{ selected_category.name }}{% else %}All Products{% endif %}</h4>
+    {% if products %}
+       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    {% for product in products %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="product-image-container" style="height: 200px; overflow: hidden;">
+                    {% if product.image_url %}
+                        <img src="{{ product.image_url }}" class="card-img-top h-100 w-100 object-fit-contain" alt="{{ product.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300" class="card-img-top h-100 w-100 object-fit-contain" alt="{{ product.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.title|truncatechars:50 }}</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="price">₹{{ product.price }}</span>
+                        <span class="badge bg-secondary">{{ product.category.name }}</span>
+                    </div>
+                    <div class="mt-2">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+    {% else %}
+        <div class="alert alert-info">No products found. Try a different search or category.</div>
+    {% endif %}
+{% endblock %}

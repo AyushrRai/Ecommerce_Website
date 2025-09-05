@@ -1,0 +1,83 @@
+/* In your static/css/style.css or in base.html */
+.product-image-container {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: #fff;
+}
+
+.card-img-top {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.card {
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: #ddd;
+}
+
+
+
+
+.product-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.product-image-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+
+
+
+/* Order History Styles */
+.order-status {
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    border-radius: 0.25rem;
+}
+
+.order-status.completed {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.order-status.pending {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.order-status.cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Order Details Styles */
+.order-product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.order-summary-card {
+    position: sticky;
+    top: 20px;
+}

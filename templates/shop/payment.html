@@ -1,0 +1,85 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Payment - ShopNow{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    Complete Your Payment
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="mb-4">Order Total: ₹{{ order.total_amount }}</h4>
+                    
+                    <div class="payment-options mb-4">
+                        <button id="rzp-button" class="btn btn-warning btn-lg me-3">
+                            <i class="fas fa-credit-card me-2"></i>Pay with Razorpay
+                        </button>
+                        <button class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-money-bill-wave me-2"></i>Cash on Delivery
+                        </button>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Your order will be processed only after successful payment.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ amount }}",
+            "currency": "{{ currency }}",
+            "name": "ShopNow",
+            "description": "Order #{{ order.id }}",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ order.razorpay_order_id }}",
+            "handler": function (response) {
+                // Submit the payment details to your server
+                $.ajax({
+                    url: "{% url 'payment_success' %}",
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    }),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            window.location.href = "{% url 'home' %}?payment=success";
+                        } else {
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    error: function() {
+                        alert('Error processing payment. Please try again.');
+                    }
+                });
+            },
+            "prefill": {
+                "name": "{{ name }}",
+                "email": "{{ email }}",
+                "contact": "9999999999"
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+        
+        var rzp1 = new Razorpay(options);
+        
+        document.getElementById('rzp-button').onclick = function(e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+{% endblock %}
