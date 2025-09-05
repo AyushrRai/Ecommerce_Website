@@ -27,3 +27,4 @@ whitenoise
 pytest-django
 coverage
 razorpay==1.4.2
+setuptools
