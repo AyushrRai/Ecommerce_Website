@@ -10,10 +10,17 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ⚡ Hosts
 ALLOWED_HOSTS = [
-    "ecommerce-website-umnl.onrender.com",  # Render domain
-    "ecommerce-website-3-g3zi.onrender.com",  # backup render domain
+    "ecommerce-website-umnl.onrender.com",
+    "ecommerce-website-3-g3zi.onrender.com",
+    "ecommerce-website-3-4cjp.onrender.com",  # 👈 NEW DOMAIN
     "localhost",
     "127.0.0.1",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ecommerce-website-umnl.onrender.com",
+    "https://ecommerce-website-3-g3zi.onrender.com",
+    "https://ecommerce-website-3-4cjp.onrender.com",  # 👈 NEW DOMAIN
 ]
 
 # ⚡ Installed Apps
@@ -104,9 +111,5 @@ LOGOUT_REDIRECT_URL = "home"
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "rzp_test_sJ29I3ZehiQfoh")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "GdH86rsTHGFUAJ8iU8all5K8")
 
-# ⚡ Security Settings for production
-CSRF_TRUSTED_ORIGINS = [
-    "https://ecommerce-website-umnl.onrender.com",
-    "https://ecommerce-website-3-g3zi.onrender.com",
-]
+
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
