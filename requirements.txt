@@ -26,4 +26,4 @@ gunicorn
 whitenoise
 pytest-django
 coverage
-razorpay
+razorpay==1.4.2
