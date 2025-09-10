@@ -1,23 +1,7 @@
-# Python
-*.pyc
+db.sqlite3
 __pycache__/
-
-
-
-# Virtualenv
+*.pyc
 env/
 venv/
-
-# Django static & media
 /staticfiles/
 /media/
-
-
-
-# Ignore SQLite DB
-db.sqlite3
-
-# Ignore pycache
-__pycache__/
-*.pyc
-
