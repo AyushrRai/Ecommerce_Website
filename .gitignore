@@ -12,5 +12,12 @@ venv/
 /staticfiles/
 /media/
 
+
+
+# Ignore SQLite DB
 db.sqlite3
+
+# Ignore pycache
 __pycache__/
+*.pyc
+
