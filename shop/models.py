@@ -27,23 +27,7 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
-    @classmethod
-    def fetch_from_api(cls):
-        response = requests.get('https://fakestoreapi.com/products')
-        if response.status_code == 200:
-            products = response.json()
-            for product in products:
-                category, _ = Category.objects.get_or_create(name=product['category'])
-                cls.objects.get_or_create(
-                    api_id=product['id'],
-                    defaults={
-                        'title': product['title'],
-                        'price': product['price'],
-                        'description': product['description'],
-                        'category': category,
-                        'image_url': product['image'],
-                    }
-                )
+   
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -7,4 +7,8 @@ db.sqlite3
 
 # Virtualenv
 env/
+venv/
 
+# Django static & media
+/staticfiles/
+/media/
