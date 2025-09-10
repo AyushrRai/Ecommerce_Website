@@ -2,8 +2,7 @@
 *.pyc
 __pycache__/
 
-# SQLite
-db.sqlite3
+
 
 # Virtualenv
 env/
@@ -12,3 +11,6 @@ venv/
 # Django static & media
 /staticfiles/
 /media/
+
+db.sqlite3
+__pycache__/
